@@ -2,11 +2,9 @@ import React from "react";
 import ReactPlayer from "react-player";
 import { PlayerProps } from "./PlayerProps";
 import FrameStepButtons from "../RunView/FrameStepButtons";
-import SpeedButtons from "../RunView/SpeedButtons";
 import FrameRateInput from "../RunView/FrameRateInput";
 import MarkerButtons from "../RunView/MarkerButtons";
 import { useTiming } from "../Providers/TimingProvider";
-import { interpTime } from "../../utils";
 
 const HelpText =
   "Let the video run.\n" +
@@ -16,9 +14,7 @@ const HelpText =
 
 export default function TwitchPlayer(props: PlayerProps) {
   const { uri, run_id } = props;
-  const [currentTime, setCurrentTime] = React.useState<number | null>(null);
   const { frameRate, setStart, setEnd } = useTiming();
-  const [rates, setRates] = React.useState<number[] | null>(null);
   const ref = React.useRef<ReactPlayer | null>(null);
 
   let video_id = "";
