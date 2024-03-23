@@ -29,6 +29,10 @@ export default function SegmentTable({
     return formatTime(totalSeconds);
   };
 
+  const copyClipboard = (e: React.MouseEvent<HTMLElement>) => {
+    navigator.clipboard.writeText(e.currentTarget.innerText);
+  };
+
   return (
     <div className="h-[calc(100vh-390px-64px-48px)] overflow-scroll border-t-2 border-b-black bg-white py-4">
       <div className="px-4 sm:px-6 lg:px-8">
@@ -37,6 +41,9 @@ export default function SegmentTable({
             <h1 className="text-base font-semibold leading-6 text-gray-900">
               Total Time: {totalDuration()}
             </h1>
+            <div onClick={copyClipboard}>
+              ModEdit: Retimed to {totalDuration()}
+            </div>
             <p className="mt-2 text-sm text-gray-700">
               Set of all measured segments
             </p>

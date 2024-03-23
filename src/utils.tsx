@@ -9,7 +9,7 @@ function formatTime(totalSeconds: number) {
 }
 
 function interpTime(time: number, frameRate: number) {
-  return time - (time % (1 / frameRate));
+  return (Math.floor(time * frameRate) + 0.5) / frameRate;
 }
 
 export { formatTime, interpTime };

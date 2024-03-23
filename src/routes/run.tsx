@@ -38,7 +38,13 @@ export default function RunView() {
     ) {
       return <YoutubePlayer uri={video} run_id={run.id} />;
     }
-    return <div>Invalid video URL</div>;
+    return (
+      <div>
+        Invalid video URL.
+        <br />
+        {video}
+      </div>
+    );
   }, [video, frameRate]);
 
   return (

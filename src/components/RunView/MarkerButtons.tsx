@@ -12,7 +12,7 @@ type PushButtonsProps = {
 
 export default function PushButtons(props: PushButtonsProps) {
   const { video_uri, run_id, onSetStart, onSetEnd } = props;
-  const { start, setStart, end, setEnd, frameRate } = useTiming();
+  const { start, end, frameRate } = useTiming();
   const { segments, setSegments } = useSegments();
 
   const saveSegment = () => {
@@ -34,8 +34,8 @@ export default function PushButtons(props: PushButtonsProps) {
     };
 
     setSegments([...segments, currentSegment]);
-    setStart(0);
-    setEnd(0);
+    // setStart(0);
+    // setEnd(0);
   };
 
   return (
