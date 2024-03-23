@@ -5,11 +5,7 @@ import SpeedButtons from "../RunView/SpeedButtons";
 import FrameStepButtons from "../RunView/FrameStepButtons";
 import MarkerButtons from "../RunView/MarkerButtons";
 import FrameRateInput from "../RunView/FrameRateInput";
-
-export type PlayerProps = {
-  run_id: string;
-  uri: string;
-};
+import { PlayerProps } from "./PlayerProps";
 
 const HelpText =
   "Right click the video and select stats for nerds.\n" +

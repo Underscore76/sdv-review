@@ -6,6 +6,7 @@ import YoutubePlayer from "../components/Video/YoutubePlayer";
 import { useTiming } from "../components/Providers/TimingProvider";
 import { useSegments } from "../components/Providers/SegmentProvider";
 import SegmentTable from "../components/RunView/SegmentTable";
+import TwitchPlayer from "../components/Video/TwitchPlayer";
 
 export default function RunView() {
   const runs = useRuns();
@@ -37,6 +38,9 @@ export default function RunView() {
       video.includes("youtu.be")
     ) {
       return <YoutubePlayer uri={video} run_id={run.id} />;
+    }
+    if (video.includes("twitch")) {
+      return <TwitchPlayer uri={video} run_id={run.id} />;
     }
     return (
       <div>

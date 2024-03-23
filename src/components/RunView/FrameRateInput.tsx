@@ -2,7 +2,14 @@ import { useState } from "react";
 import { useTiming } from "../Providers/TimingProvider";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 
-export default function FrameRateInput({ helpText }: { helpText: string }) {
+type FrameRateInputProps = {
+  helpText: string;
+  defaultVal?: number;
+  disabled?: boolean;
+};
+
+export default function FrameRateInput(props: FrameRateInputProps) {
+  const { helpText, disabled } = props;
   const [error, setError] = useState(false);
   const { setFrameRate } = useTiming();
 
@@ -27,9 +34,9 @@ export default function FrameRateInput({ helpText }: { helpText: string }) {
         &nbsp;
         <div className="has-tooltip">
           <QuestionMarkCircleIcon className=" h-5 w-5 text-gray-500"></QuestionMarkCircleIcon>
-          <span className="tooltip bg-white-100 pointer-events-none -mt-8 rounded bg-white p-1 text-black shadow-lg">
-            {helpText}
-          </span>
+          <div className="tooltip bg-white-100 pointer-events-none -mt-8 rounded bg-white p-1 text-black shadow-lg">
+            <pre>{helpText}</pre>
+          </div>
         </div>
       </div>
       <div className="mt-2">
@@ -44,7 +51,9 @@ export default function FrameRateInput({ helpText }: { helpText: string }) {
               setFrameRate(parseInt(e.target.value));
             }
           }}
+          defaultValue={props.defaultVal || undefined}
           aria-invalid="true"
+          disabled={disabled}
         />
       </div>
       {error && (

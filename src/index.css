@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 .tooltip {
-  @apply invisible absolute;
+  @apply invisible fixed right-0;
 }
 
 .has-tooltip:hover .tooltip {
