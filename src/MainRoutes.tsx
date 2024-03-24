@@ -10,6 +10,7 @@ export const MainRoutes = [
       {
         path: "run/:id",
         element: <RunView />,
+        error: <div>Run Not Found</div>,
       },
     ],
   },
