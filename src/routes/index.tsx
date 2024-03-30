@@ -11,7 +11,7 @@ import RunItem from "../components/RunsList/RunItem";
 import { Run, Variable, VariableLookup } from "../components/RunsList/RunData";
 import AppProviders from "../components/Providers";
 
-export async function loader({ params }: { params: any }): Promise<Run[]> {
+export async function loader(): Promise<Run[]> {
   const game_id =
     sessionStorage.getItem(CONSTANTS.SESSION_STORAGE_KEY) || CONSTANTS.base;
   let varUrl = `${CONSTANTS.api_url}/games/${game_id}/variables`;
