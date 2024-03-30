@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import { useRuns } from ".";
 import { useEffect, useMemo, useState } from "react";
 import VideoSelect from "../components/RunView/VideoSelector";
@@ -16,7 +16,7 @@ export default function RunView() {
   const { segments, setSegments } = useSegments();
   const run = runs.find((run) => run.id === params.id);
   if (!run) {
-    return <div>Run not found</div>;
+    return <Navigate to="/sdv-review/" replace={true} />;
   }
 
   useEffect(() => {

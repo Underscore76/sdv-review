@@ -11,9 +11,10 @@ import RunItem from "../components/RunsList/RunItem";
 import { Run, Variable, VariableLookup } from "../components/RunsList/RunData";
 import AppProviders from "../components/Providers";
 
-export async function loader(): Promise<Run[]> {
-  console.log("hello");
-  let varUrl = `${CONSTANTS.base_url}/games/${CONSTANTS.game}/variables`;
+export async function loader({ params }: { params: any }): Promise<Run[]> {
+  const game_id =
+    sessionStorage.getItem(CONSTANTS.SESSION_STORAGE_KEY) || CONSTANTS.base;
+  let varUrl = `${CONSTANTS.api_url}/games/${game_id}/variables`;
   let varResponse = await fetch(varUrl);
   let varData = await varResponse.json();
 
@@ -29,7 +30,7 @@ export async function loader(): Promise<Run[]> {
     };
   });
 
-  let url = `${CONSTANTS.base_url}/runs?game=${CONSTANTS.game}&status=new&max=1000&embed=players,category`;
+  let url = `${CONSTANTS.api_url}/runs?game=${game_id}&status=new&max=1000&embed=players,category`;
   let response = await fetch(url);
   let data = await response.json();
 
@@ -58,9 +59,17 @@ export function Home() {
     return <div>Loading...</div>;
   }
 
+  const changeGame = (id: string) => {
+    sessionStorage.setItem(CONSTANTS.SESSION_STORAGE_KEY, id);
+    revalidator.revalidate();
+  };
+
   return (
     <div className="max-h-screen">
-      <Navbar onClick={() => revalidator.revalidate()} />
+      <Navbar
+        onClickRefresh={() => revalidator.revalidate()}
+        onSelectBoard={changeGame}
+      />
       <div className="flex h-[calc(100vh-64px)]">
         <div className="w-1/3">
           <div className="flex flex-col divide-y divide-gray-200 overflow-y-auto bg-white shadow">

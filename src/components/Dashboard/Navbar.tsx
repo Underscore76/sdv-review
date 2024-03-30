@@ -1,9 +1,17 @@
 import BlueChicken from "../../assets/bluechicken.png";
 import { Disclosure } from "@headlessui/react";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
+import BoardSelector from "./BoardSelector";
+import { CONSTANTS } from "../../Constants";
+
+const Boards = [
+  { name: "Base", id: CONSTANTS.base },
+  { name: "CatEx", id: CONSTANTS.catex },
+];
 
 type NavbarProps = {
-  onClick: () => void;
+  onClickRefresh: () => void;
+  onSelectBoard: (board: string) => void;
 };
 
 export default function Navbar(props: NavbarProps) {
@@ -20,10 +28,14 @@ export default function Navbar(props: NavbarProps) {
             </div>
             <div className="md:block">
               <div className="ml-4 flex items-center md:ml-6">
+                <BoardSelector
+                  onSelect={props.onSelectBoard}
+                  options={Boards}
+                />
                 <button
                   type="button"
                   className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                  onClick={props.onClick}
+                  onClick={props.onClickRefresh}
                 >
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">Reload data</span>
