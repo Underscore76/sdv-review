@@ -16,7 +16,7 @@ export default function RunView() {
   const { segments, setSegments } = useSegments();
   const run = runs.find((run) => run.id === params.id);
   if (!run) {
-    return <Navigate to="/sdv-review/" replace={true} />;
+    return <Navigate to="/" replace={true} />;
   }
 
   useEffect(() => {

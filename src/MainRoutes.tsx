@@ -3,7 +3,7 @@ import RunView from "./routes/run";
 
 export const MainRoutes = [
   {
-    path: "/sdv-review/",
+    path: "/",
     element: <Home />,
     loader: rootLoader,
     children: [
