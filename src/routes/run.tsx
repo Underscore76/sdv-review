@@ -7,6 +7,9 @@ import { useTiming } from "../components/Providers/TimingProvider";
 import { useSegments } from "../components/Providers/SegmentProvider";
 import SegmentTable from "../components/RunView/SegmentTable";
 import TwitchPlayer from "../components/Video/TwitchPlayer";
+import Button from "../components/General/Button";
+import { copyTextClipboard } from "../utils";
+import { scriptText as BiliBiliScriptText } from "../components/Video/BiliBiliScript";
 
 export default function RunView() {
   const runs = useRuns();
@@ -42,20 +45,58 @@ export default function RunView() {
     if (video.includes("twitch")) {
       return <TwitchPlayer uri={video} run_id={run.id} />;
     }
+    return null;
+  }, [video, frameRate]);
+
+  const nullPlayer = useMemo(() => {
     return (
-      <div>
-        Invalid video URL.
+      <div className="p-4">
+        Invalid video URL (may be bilibili or some other issue?).
         <br />
-        {video}
+        <a
+          className="text-blue-600 underline visited:text-purple-600 hover:text-blue-800"
+          href={video}
+          target="_blank"
+        >
+          {video}
+        </a>
+        <hr />
+        <div className="flex max-w-5xl flex-col">
+          <div>
+            If this video is a bilibili video, we have some javascript code you
+            can run in your browser console to streamline retiming directly on
+            the bilibili page.
+          </div>
+          <div>
+            <Button
+              variant="red"
+              onClick={() => copyTextClipboard(BiliBiliScriptText)}
+            >
+              Copy BiliBili Retiming script to clipboard
+            </Button>
+          </div>
+          <div>
+            Click the video link to open BiliBili, open up the developer console
+            (F12 in Chrome, ctrl+shift+j or command+shift+j in many browsers),
+            and paste the script into the console then press enter to run it.
+            After that, you can close the console. This should insert buttons
+            above the right panel to do your retiming.
+          </div>
+        </div>
       </div>
     );
-  }, [video, frameRate]);
+  }, [video]);
 
   return (
     <div>
       <VideoSelect run={run} onSelect={handleSelect} />
-      {videoPlayer}
-      <SegmentTable segments={segments} setSegments={setSegments} />
+      {(videoPlayer !== null && (
+        <>
+          {videoPlayer}
+          <SegmentTable segments={segments} setSegments={setSegments} />
+        </>
+      )) ||
+        nullPlayer}
     </div>
   );
 }

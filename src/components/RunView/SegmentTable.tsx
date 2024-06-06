@@ -1,5 +1,5 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { formatTime } from "../../utils";
+import { copyClipboard, formatTime } from "../../utils";
 import { Segment } from "../Providers/SegmentProvider";
 import Button from "../General/Button";
 
@@ -27,10 +27,6 @@ export default function SegmentTable({
       0,
     );
     return formatTime(totalSeconds);
-  };
-
-  const copyClipboard = (e: React.MouseEvent<HTMLElement>) => {
-    navigator.clipboard.writeText(e.currentTarget.innerText);
   };
 
   return (
