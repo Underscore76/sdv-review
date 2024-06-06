@@ -14,4 +14,12 @@ function interpTime(time: number, frameRate: number) {
   return (Math.floor(time * frameRate) + 0.5) / frameRate;
 }
 
-export { formatTime, interpTime };
+function copyClipboard(e: React.MouseEvent<HTMLElement>) {
+  navigator.clipboard.writeText(e.currentTarget.innerText);
+}
+
+function copyTextClipboard(text: string) {
+  navigator.clipboard.writeText(text);
+}
+
+export { formatTime, interpTime, copyClipboard, copyTextClipboard };

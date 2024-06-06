@@ -8,4 +8,7 @@ export default defineConfig({
     outDir: "build",
   },
   base: "/sdv-review/",
+  server: {
+    port: 3000,
+  },
 });
