@@ -16,9 +16,6 @@ export default function ManualView() {
     setSegments([]);
   }, []);
   const [video, setVideo] = useState<string>("");
-  const handleSelect = (video: string) => {
-    setVideo(video);
-  };
 
   let videoPlayer = useMemo(() => {
     if (
