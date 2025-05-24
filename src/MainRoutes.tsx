@@ -1,4 +1,5 @@
 import { Home, loader as rootLoader } from "./routes/index";
+import ManualView from "./routes/manual";
 import RunView from "./routes/run";
 
 export const MainRoutes = [
@@ -7,6 +8,11 @@ export const MainRoutes = [
     element: <Home />,
     loader: rootLoader,
     children: [
+      {
+        path: "run/manual",
+        element: <ManualView />,
+        errorElement: <div>Run Not Found</div>,
+      },
       {
         path: "run/:id",
         element: <RunView />,

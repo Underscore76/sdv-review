@@ -27,6 +27,8 @@ export default function YoutubePlayer(props: PlayerProps) {
     const url = new URL(uri);
     video_id = url.searchParams.get("v") || "";
   }
+  // fix issue where youtube url includes a malformed timestamp query string
+  video_id = video_id.split("?")[0];
   if (video_id === "") {
     return <div>Invalid YouTube URL</div>;
   }
