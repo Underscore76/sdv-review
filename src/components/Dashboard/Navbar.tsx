@@ -3,6 +3,7 @@ import { Disclosure } from "@headlessui/react";
 import { ArrowPathIcon } from "@heroicons/react/24/outline";
 import BoardSelector from "./BoardSelector";
 import { CONSTANTS } from "../../Constants";
+import { Link } from "react-router-dom";
 
 const Boards = [
   { name: "Base", id: CONSTANTS.base },
@@ -28,6 +29,12 @@ export default function Navbar(props: NavbarProps) {
             </div>
             <div className="md:block">
               <div className="ml-4 flex items-center md:ml-6">
+                <Link
+                  to={`run/manual`}
+                  className="relative rounded-md bg-white px-2.5 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                >
+                  Manual Link<span className="sr-only">Manual Link</span>
+                </Link>
                 <BoardSelector
                   onSelect={props.onSelectBoard}
                   options={Boards}

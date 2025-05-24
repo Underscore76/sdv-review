@@ -52,6 +52,7 @@ export default function RunItem({ run }: { run: Run }) {
     run.values["Mines"] ||
     run.values["Seeded Mines"] ||
     run.values["Meme"] ||
+    run.values["Perfection Type"] ||
     run.values["Junimo Kart"];
   return (
     <li key={run.id} className="flex items-center justify-between gap-x-6 py-5">
