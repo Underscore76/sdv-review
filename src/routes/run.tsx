@@ -10,7 +10,7 @@ import TwitchPlayer from "../components/Video/TwitchPlayer";
 import Button from "../components/General/Button";
 import { copyTextClipboard } from "../utils";
 import { scriptText as BiliBiliScriptText } from "../components/Video/BiliBiliScript";
-import { ShareIcon } from "@heroicons/react/20/solid";
+import { ClipboardIcon } from "@heroicons/react/24/outline";
 
 export default function RunView() {
   const runs = useRuns();
@@ -91,15 +91,21 @@ export default function RunView() {
   return (
     <div>
       <div className="flex flex-row items-center">
-        <button
-          type="button"
-          className="relative mr-4 rounded-full p-2 text-gray-900  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600"
-          onClick={() => copyTextClipboard(video)}
-        >
-          <span className="absolute -inset-1.5" />
-          <span className="sr-only">Reload data</span>
-          <ShareIcon className="h-6 w-6" aria-hidden="true" />
-        </button>
+        <div className="has-tooltip">
+          <button
+            type="button"
+            className="relative mr-4 rounded-full p-2 text-gray-900  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset active:ring-2 active:ring-inset active:ring-indigo-600"
+            onClick={() => copyTextClipboard(video)}
+          >
+            <span className="absolute -inset-1.5" />
+            <span className="sr-only">Reload data</span>
+            <ClipboardIcon className="h-6 w-6" aria-hidden="true" />
+          </button>
+          <div className="tooltip bg-white-100 pointer-events-none translate-x-10 rounded bg-white p-1 text-black shadow-lg">
+            <pre>Copy video link to clipboard</pre>
+          </div>
+        </div>
+
         <div className="flex min-w-[500px] flex-col">
           <VideoSelect run={run} onSelect={handleSelect} />
         </div>

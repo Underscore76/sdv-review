@@ -34,7 +34,7 @@ export default function FrameRateInput(props: FrameRateInputProps) {
         &nbsp;
         <div className="has-tooltip">
           <QuestionMarkCircleIcon className=" h-5 w-5 text-gray-500"></QuestionMarkCircleIcon>
-          <div className="tooltip bg-white-100 pointer-events-none -mt-8 rounded bg-white p-1 text-black shadow-lg">
+          <div className="tooltip bg-white-100 pointer-events-none -translate-x-full rounded bg-white p-1 text-black shadow-lg">
             <pre>{helpText}</pre>
           </div>
         </div>
