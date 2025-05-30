@@ -12,16 +12,16 @@ const HelpText =
   "Click Advanced.\n" +
   "Toggle Video Stats.\n";
 
-export default function TwitchPlayer(props: PlayerProps) {
+export default function LocalPlayer(props: PlayerProps) {
   const { uri, run_id } = props;
   const { frameRate, setStart, setEnd } = useTiming();
   const ref = React.useRef<ReactPlayer | null>(null);
 
   let video_id = "";
-  if (uri.includes("twitch.tv")) {
-    video_id = uri.split("/").pop() || "";
+  if (uri.startsWith("blob:")) {
+    video_id = uri;
   } else {
-    return <div>Invalid Twitch URL</div>;
+    return <div>Invalid Local File</div>;
   }
 
   async function updateFrames(frames: number) {
@@ -51,13 +51,13 @@ export default function TwitchPlayer(props: PlayerProps) {
   return (
     <div className="flex">
       <ReactPlayer
-        id="twitch-embed"
+        id="local-embed"
         ref={ref}
         url={props.uri}
         controls={true}
         config={{
-          twitch: {
-            options: {
+          file: {
+            attributes: {
               autoplay: false,
               allowfullscreen: false,
               muted: true,
