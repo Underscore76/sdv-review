@@ -83,6 +83,13 @@ export default function RunView() {
             After that, you can close the console. This should insert buttons
             above the right panel to do your retiming.
           </div>
+          <div>
+            Alternatively if you have yt-dlp installed, you can run the
+            following command in your terminal to download the video:
+            <pre className="whitespace-pre-wrap">
+              {`yt-dlp -o ${run.id}.mp4 ${video}`}
+            </pre>
+          </div>
         </div>
       </div>
     );

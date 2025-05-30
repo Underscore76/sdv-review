@@ -30,6 +30,12 @@ export default function Navbar(props: NavbarProps) {
             <div className="md:block">
               <div className="ml-4 flex items-center md:ml-6">
                 <Link
+                  to={`run/local`}
+                  className="relative rounded-md bg-white px-2.5 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
+                >
+                  Local File<span className="sr-only">Local File</span>
+                </Link>
+                <Link
                   to={`run/manual`}
                   className="relative rounded-md bg-white px-2.5 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                 >

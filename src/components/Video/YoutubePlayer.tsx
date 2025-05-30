@@ -42,7 +42,6 @@ export default function YoutubePlayer(props: PlayerProps) {
     if (!player || player === null) {
       return;
     }
-    console.log(frameRate);
     return player
       .pauseVideo()
       .then(() => player.getCurrentTime())
