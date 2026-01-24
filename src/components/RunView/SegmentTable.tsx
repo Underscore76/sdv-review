@@ -32,8 +32,8 @@ export default function SegmentTable({
   return (
     <div className="h-[calc(100vh-390px-64px-48px)] overflow-scroll border-t-2 border-b-black bg-white py-4">
       <div className="px-4 sm:px-6 lg:px-8">
-        <div className="sm:flex sm:items-center">
-          <div className="sm:flex-auto">
+        <div className="gap-4 sm:flex sm:items-center">
+          <div className="pr-2 sm:flex-none">
             <h1 className="text-base font-semibold leading-6 text-gray-900">
               Total Time: {totalDuration()}
             </h1>
@@ -44,7 +44,15 @@ export default function SegmentTable({
               Set of all measured segments
             </p>
           </div>
-          <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+          <div className="sm:flex-auto">
+            <textarea
+              id="message"
+              rows={4}
+              className="bg-neutral-secondary-medium border-default-medium text-heading rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body block w-full resize-none border p-1.5 text-sm"
+              placeholder="Notes (NOT SAVED)"
+            ></textarea>
+          </div>
+          <div className="mt-4 sm:ml-0 sm:mt-0 sm:flex-none">
             <Button variant="red" onClick={clearSegments}>
               Clear All
             </Button>
