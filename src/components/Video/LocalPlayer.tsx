@@ -72,7 +72,7 @@ export default function LocalPlayer(props: PlayerProps) {
 
       {/* Push states */}
       <div className="flex-none items-center">
-        <FrameRateInput helpText={HelpText} />
+        <FrameRateInput key={"local-" + video_id} helpText={HelpText} />
         <MarkerButtons
           onSetStart={onSetStart}
           onSetEnd={onSetEnd}

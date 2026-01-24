@@ -72,7 +72,7 @@ export default function TwitchPlayer(props: PlayerProps) {
 
       {/* Push states */}
       <div className="flex-none items-center">
-        <FrameRateInput helpText={HelpText} />
+        <FrameRateInput key={"tw-" + video_id} helpText={HelpText} />
         <MarkerButtons
           onSetStart={onSetStart}
           onSetEnd={onSetEnd}

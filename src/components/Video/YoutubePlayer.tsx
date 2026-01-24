@@ -126,7 +126,7 @@ export default function YoutubePlayer(props: PlayerProps) {
 
       {/* Push states */}
       <div className="flex-none items-center">
-        <FrameRateInput helpText={HelpText} />
+        <FrameRateInput key={"yt-" + video_id} helpText={HelpText} />
         <MarkerButtons
           onSetStart={onSetStart}
           onSetEnd={onSetEnd}
