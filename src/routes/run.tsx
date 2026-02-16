@@ -41,10 +41,10 @@ export default function RunView() {
       video.includes("youtube") ||
       video.includes("youtu.be")
     ) {
-      return <YoutubePlayer uri={video} run={run} />;
+      return <YoutubePlayer uri={video} run={run} run_id={run.id} />;
     }
     if (video.includes("twitch")) {
-      return <TwitchPlayer uri={video} run={run} />;
+      return <TwitchPlayer uri={video} run={run} run_id={run.id} />;
     }
     return null;
   }, [video, frameRate]);

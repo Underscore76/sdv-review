@@ -1,6 +1,6 @@
 import React from "react";
 import ReactPlayer from "react-player";
-import { LocalPlayerProps } from "./PlayerProps";
+import { PlayerProps } from "./PlayerProps";
 import FrameStepButtons from "../RunView/FrameStepButtons";
 import FrameRateInput from "../RunView/FrameRateInput";
 import MarkerButtons from "../RunView/MarkerButtons";
@@ -12,7 +12,7 @@ const HelpText =
   "Click Advanced.\n" +
   "Toggle Video Stats.\n";
 
-export default function LocalPlayer(props: LocalPlayerProps) {
+export default function LocalPlayer(props: PlayerProps) {
   const { uri, run_id } = props;
   const { frameRate, setStart, setEnd } = useTiming();
   const ref = React.useRef<ReactPlayer | null>(null);

@@ -3,7 +3,6 @@ import Button from "../General/Button";
 import MarkdownRegion from "../General/MarkdownRegion";
 import { useSegments } from "../Providers/SegmentProvider";
 import { useTiming } from "../Providers/TimingProvider";
-import ReactMarkdown from "react-markdown";
 
 type PushButtonsProps = {
   video_uri: string;

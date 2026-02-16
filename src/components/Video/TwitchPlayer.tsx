@@ -13,8 +13,7 @@ const HelpText =
   "Toggle Video Stats.\n";
 
 export default function TwitchPlayer(props: PlayerProps) {
-  const { uri, run } = props;
-  const run_id = run.id;
+  const { uri, run, run_id } = props;
   const { frameRate, setStart, setEnd } = useTiming();
   const ref = React.useRef<ReactPlayer | null>(null);
 
@@ -81,7 +80,7 @@ export default function TwitchPlayer(props: PlayerProps) {
           onSetEnd={onSetEnd}
           video_uri={video_id}
           run_id={run_id}
-          rules={run.rules}
+          rules={run?.rules}
         />
       </div>
     </div>
