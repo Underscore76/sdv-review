@@ -13,19 +13,18 @@ const HelpText =
   "Structured as 'Width x Height @ FrameRate'";
 
 export default function YoutubePlayer(props: PlayerProps) {
-  const { uri, run_id } = props;
+  const { uri, run } = props;
+  const run_id = run.id;
   const { frameRate, setStart, setEnd } = useTiming();
 
   const ref = React.useRef<YouTube | null>(null);
   const [rates, setRates] = React.useState<number[] | null>(null);
 
+  const url = new URL(uri);
   let video_id = "";
-  if (uri.includes("youtu.be")) {
-    video_id = uri.split("/").pop() || "";
-    video_id = video_id.split("?")[0];
-  } else {
-    const url = new URL(uri);
-    video_id = url.searchParams.get("v") || "";
+  video_id = url.searchParams.get("v") || "";
+  if (url.origin.includes("youtu.be")) {
+    video_id = url.pathname.substring(1);
   }
   // fix issue where youtube url includes a malformed timestamp query string
   video_id = video_id.split("?")[0];
@@ -132,6 +131,7 @@ export default function YoutubePlayer(props: PlayerProps) {
           onSetEnd={onSetEnd}
           video_uri={video_id}
           run_id={run_id}
+          rules={run.rules}
         />
       </div>
     </div>

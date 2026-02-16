@@ -1,4 +1,6 @@
+import { Run } from "../RunsList/RunData";
+
 export type PlayerProps = {
-  run_id: string;
+  run: Run;
   uri: string;
 };

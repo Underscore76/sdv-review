@@ -20,9 +20,12 @@ export async function loader(): Promise<Run[]> {
 
   let catMap: VariableLookup = {};
   varData.data.forEach((variable: Variable) => {
-    let variableMap: { [key: string]: string } = {};
+    let variableMap: { [key: string]: { label: string; rules: string } } = {};
     Object.keys(variable.values.values).forEach((key) => {
-      variableMap[key] = variable.values.values[key].label;
+      variableMap[key] = {
+        label: variable.values.values[key].label,
+        rules: variable.values.values[key].rules,
+      };
     });
     catMap[variable.id] = {
       choices: variableMap,
@@ -37,15 +40,27 @@ export async function loader(): Promise<Run[]> {
   let runs = data.data satisfies Run[];
   runs.forEach((run: Run) => {
     let simple_values = {} as { [key: string]: string };
+    let specific_rules = "";
     Object.keys(run.values).forEach((key) => {
       let value = run.values[key];
       if (catMap[key]) {
-        simple_values[catMap[key].name] = catMap[key].choices[value];
+        simple_values[catMap[key].name] = catMap[key].choices[value].label;
+        if (
+          catMap[key].choices[value].rules &&
+          (catMap[key].choices[value].rules
+            .toLowerCase()
+            .includes("time start") ||
+            catMap[key].choices[value].rules.toLowerCase().includes("time end"))
+        ) {
+          specific_rules =
+            specific_rules + "\n\n" + catMap[key].choices[value].rules;
+        }
       } else {
         simple_values[key] = value;
       }
     });
     run.values = simple_values;
+    run.rules = specific_rules + "\n\n" + run.category.data.rules;
     run.weblink = run.weblink.replace("/run/", "/runs/");
   });
   return runs;

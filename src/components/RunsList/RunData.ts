@@ -80,6 +80,7 @@ export type Run = {
   };
   splits: any;
   values: { [key: string]: string };
+  rules: string;
 };
 
 export type Variable = {
@@ -108,7 +109,7 @@ export type Variable = {
 export type VariableLookup = {
   [key: string]: {
     name: string;
-    choices: { [key: string]: string };
+    choices: { [key: string]: { label: string; rules: string } };
   };
 };
 

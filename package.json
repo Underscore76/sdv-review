@@ -15,12 +15,14 @@
     "@heroicons/react": "^2.1.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-markdown": "^10.1.0",
     "react-player": "^2.15.1",
     "react-router-dom": "^6.22.3",
     "react-youtube": "^10.1.0"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.19",
     "@types/react": "^18.2.64",
     "@types/react-dom": "^18.2.21",
     "@types/react-router-dom": "^5.3.3",

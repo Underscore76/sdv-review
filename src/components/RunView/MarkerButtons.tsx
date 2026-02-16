@@ -1,17 +1,20 @@
 import { interpTime } from "../../utils";
 import Button from "../General/Button";
+import MarkdownRegion from "../General/MarkdownRegion";
 import { useSegments } from "../Providers/SegmentProvider";
 import { useTiming } from "../Providers/TimingProvider";
+import ReactMarkdown from "react-markdown";
 
 type PushButtonsProps = {
   video_uri: string;
   run_id: string;
+  rules?: string;
   onSetStart: () => void;
   onSetEnd: () => void;
 };
 
 export default function PushButtons(props: PushButtonsProps) {
-  const { video_uri, run_id, onSetStart, onSetEnd } = props;
+  const { video_uri, run_id, rules, onSetStart, onSetEnd } = props;
   const { start, end, frameRate } = useTiming();
   const { segments, setSegments } = useSegments();
 
@@ -53,6 +56,18 @@ export default function PushButtons(props: PushButtonsProps) {
           Push
         </Button>
       </div>
+      {rules && (
+        <div className="flex flex-col items-center px-4 pt-2">
+          <div className="group relative inline-block">
+            <div className="cursor-help text-xl text-gray-600 underline">
+              Rules
+            </div>
+            <div className="absolute left-0 top-full z-10 hidden w-96 -translate-x-2/3 rounded bg-white p-2 text-xs text-gray-800 shadow-md group-hover:block">
+              <MarkdownRegion markdown={rules} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -13,7 +13,8 @@ const HelpText =
   "Toggle Video Stats.\n";
 
 export default function LocalPlayer(props: PlayerProps) {
-  const { uri, run_id } = props;
+  const { uri, run } = props;
+  const run_id = run.id;
   const { frameRate, setStart, setEnd } = useTiming();
   const ref = React.useRef<ReactPlayer | null>(null);
 
@@ -78,6 +79,7 @@ export default function LocalPlayer(props: PlayerProps) {
           onSetEnd={onSetEnd}
           video_uri={video_id}
           run_id={run_id}
+          rules={run.rules}
         />
       </div>
     </div>
