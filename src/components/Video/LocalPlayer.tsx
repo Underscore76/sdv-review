@@ -1,6 +1,6 @@
 import React from "react";
 import ReactPlayer from "react-player";
-import { PlayerProps } from "./PlayerProps";
+import { LocalPlayerProps } from "./PlayerProps";
 import FrameStepButtons from "../RunView/FrameStepButtons";
 import FrameRateInput from "../RunView/FrameRateInput";
 import MarkerButtons from "../RunView/MarkerButtons";
@@ -12,9 +12,8 @@ const HelpText =
   "Click Advanced.\n" +
   "Toggle Video Stats.\n";
 
-export default function LocalPlayer(props: PlayerProps) {
-  const { uri, run } = props;
-  const run_id = run.id;
+export default function LocalPlayer(props: LocalPlayerProps) {
+  const { uri, run_id } = props;
   const { frameRate, setStart, setEnd } = useTiming();
   const ref = React.useRef<ReactPlayer | null>(null);
 
@@ -51,23 +50,25 @@ export default function LocalPlayer(props: PlayerProps) {
 
   return (
     <div className="flex">
-      <ReactPlayer
-        id="local-embed"
-        ref={ref}
-        url={props.uri}
-        controls={true}
-        config={{
-          file: {
-            attributes: {
-              autoplay: false,
-              allowfullscreen: false,
-              muted: true,
+      <div className="aspect-video w-full max-w-[960px]">
+        <ReactPlayer
+          id="local-embed"
+          ref={ref}
+          url={props.uri}
+          controls={true}
+          config={{
+            file: {
+              attributes: {
+                autoplay: false,
+                allowfullscreen: false,
+                muted: true,
+              },
             },
-          },
-        }}
-        width={640}
-        height={360}
-      />
+          }}
+          width="100%"
+          height="100%"
+        />
+      </div>
       {/* Frame control buttons */}
       <FrameStepButtons onStepFrames={onStepFrames} />
 
@@ -79,7 +80,6 @@ export default function LocalPlayer(props: PlayerProps) {
           onSetEnd={onSetEnd}
           video_uri={video_id}
           run_id={run_id}
-          rules={run.rules}
         />
       </div>
     </div>

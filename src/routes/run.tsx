@@ -96,7 +96,7 @@ export default function RunView() {
   }, [video]);
 
   return (
-    <div>
+    <div className="h-full">
       <div className="flex flex-row items-center">
         <div className="has-tooltip">
           <button

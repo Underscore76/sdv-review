@@ -51,23 +51,25 @@ export default function TwitchPlayer(props: PlayerProps) {
 
   return (
     <div className="flex">
-      <ReactPlayer
-        id="twitch-embed"
-        ref={ref}
-        url={props.uri}
-        controls={true}
-        config={{
-          twitch: {
-            options: {
-              autoplay: false,
-              allowfullscreen: false,
-              muted: true,
+      <div className="aspect-video w-full max-w-[960px]">
+        <ReactPlayer
+          id="twitch-embed"
+          ref={ref}
+          url={props.uri}
+          controls={true}
+          config={{
+            twitch: {
+              options: {
+                autoplay: false,
+                allowfullscreen: false,
+                muted: true,
+              },
             },
-          },
-        }}
-        width={640}
-        height={360}
-      />
+          }}
+          width="100%"
+          height="100%"
+        />
+      </div>
       {/* Frame control buttons */}
       <FrameStepButtons onStepFrames={onStepFrames} />
 

@@ -85,11 +85,11 @@ export function Home() {
         onClickRefresh={() => revalidator.revalidate()}
         onSelectBoard={changeGame}
       />
-      <div className="flex h-[calc(100vh-64px)]">
+      <div className="flex h-[calc(100vh-80px)]">
         <div className="w-1/3">
           <div className="flex flex-col divide-y divide-gray-200 overflow-y-auto bg-white shadow">
             <Header text={`Runs - ${data.length}`} />
-            <div className="h-[calc(100vh-150px)] overflow-y-auto">
+            <div className="h-[calc(100vh-180px)] overflow-y-auto">
               <div className="h-full flex-grow overflow-y-auto px-4 py-5 sm:p-6">
                 {data.map((run: Run, index: number) => {
                   return <RunItem key={index} run={run} />;
@@ -99,7 +99,7 @@ export function Home() {
           </div>
         </div>
         <div className="w-2/3">
-          <div className="divide-y divide-gray-200 bg-white shadow">
+          <div className="h-full divide-y divide-gray-200 bg-white shadow">
             <AppProviders>
               <Outlet context={data} />
             </AppProviders>

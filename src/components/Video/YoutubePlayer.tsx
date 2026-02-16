@@ -103,20 +103,25 @@ export default function YoutubePlayer(props: PlayerProps) {
 
   return (
     <div className="flex">
-      <YouTube
-        ref={ref}
-        videoId={video_id}
-        id="yt-player"
-        onReady={onReady}
-        opts={{
-          playerVars: {
-            // https://developers.google.com/youtube/player_parameters
-            autoplay: 1,
-            enablejsapi: 1,
-            rel: 0,
-          },
-        }}
-      />
+      <div className="aspect-video w-full max-w-[960px]">
+        <YouTube
+          ref={ref}
+          className="h-full w-full"
+          videoId={video_id}
+          id="yt-player"
+          onReady={onReady}
+          opts={{
+            width: "100%",
+            height: "100%",
+            playerVars: {
+              // https://developers.google.com/youtube/player_parameters
+              autoplay: 1,
+              enablejsapi: 1,
+              rel: 0,
+            },
+          }}
+        />
+      </div>
 
       {/* Frame control buttons */}
       <FrameStepButtons onStepFrames={onStepFrames} />

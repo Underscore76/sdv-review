@@ -30,7 +30,7 @@ export default function SegmentTable({
   };
 
   return (
-    <div className="h-[calc(100vh-390px-64px-48px)] overflow-scroll border-t-2 border-b-black bg-white py-4">
+    <div className="h-[calc(100vh-80px-540px-50px)] overflow-scroll border-t-2 border-b-black bg-white py-4">
       <div className="px-4 sm:px-6 lg:px-8">
         <div className="gap-4 sm:flex sm:items-center">
           <div className="pr-2 sm:flex-none">
