@@ -1,5 +1,8 @@
+import { Suspense, useEffect, useState } from "react";
 import { CONSTANTS } from "../Constants";
 import {
+  Await,
+  defer,
   Outlet,
   useLoaderData,
   useOutletContext,
@@ -11,7 +14,7 @@ import RunItem from "../components/RunsList/RunItem";
 import { Run, Variable, VariableLookup } from "../components/RunsList/RunData";
 import AppProviders from "../components/Providers";
 
-export async function loader(): Promise<Run[]> {
+async function loadRuns(): Promise<Run[]> {
   const game_id =
     sessionStorage.getItem(CONSTANTS.SESSION_STORAGE_KEY) || CONSTANTS.base;
   let varUrl = `${CONSTANTS.api_url}/games/${game_id}/variables`;
@@ -66,16 +69,43 @@ export async function loader(): Promise<Run[]> {
   return runs;
 }
 
-export function Home() {
-  const data = useLoaderData() as Run[];
-  const revalidator = useRevalidator();
+export function loader() {
+  return defer({
+    runs: loadRuns(),
+  });
+}
 
-  if (!data) {
-    return <div>Loading...</div>;
-  }
+function RunsListSkeleton() {
+  return (
+    <>
+      <Header text="Runs - Loading..." />
+      <div className="h-[calc(100vh-180px)] overflow-y-auto">
+        <div className="h-full flex-grow overflow-y-auto px-4 py-5 sm:p-6">
+          <div className="text-sm text-gray-500">Loading runs...</div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function RunViewSkeleton() {
+  return <div className="p-6 text-sm text-gray-500">Loading run details...</div>;
+}
+
+export function Home() {
+  const { runs } = useLoaderData() as { runs: Promise<Run[]> };
+  const revalidator = useRevalidator();
+  const [isBoardSwitchPending, setIsBoardSwitchPending] = useState(false);
+
+  useEffect(() => {
+    if (revalidator.state === "idle") {
+      setIsBoardSwitchPending(false);
+    }
+  }, [revalidator.state]);
 
   const changeGame = (id: string) => {
     sessionStorage.setItem(CONSTANTS.SESSION_STORAGE_KEY, id);
+    setIsBoardSwitchPending(true);
     revalidator.revalidate();
   };
 
@@ -88,21 +118,43 @@ export function Home() {
       <div className="flex h-[calc(100vh-80px)]">
         <div className="w-1/3">
           <div className="flex flex-col divide-y divide-gray-200 overflow-y-auto bg-white shadow">
-            <Header text={`Runs - ${data.length}`} />
-            <div className="h-[calc(100vh-180px)] overflow-y-auto">
-              <div className="h-full flex-grow overflow-y-auto px-4 py-5 sm:p-6">
-                {data.map((run: Run, index: number) => {
-                  return <RunItem key={index} run={run} />;
-                })}
-              </div>
-            </div>
+            {isBoardSwitchPending ? (
+              <RunsListSkeleton />
+            ) : (
+              <Suspense fallback={<RunsListSkeleton />}>
+                <Await resolve={runs}>
+                  {(resolvedRuns: Run[]) => (
+                    <>
+                      <Header text={`Runs - ${resolvedRuns.length}`} />
+                      <div className="h-[calc(100vh-180px)] overflow-y-auto">
+                        <div className="h-full flex-grow overflow-y-auto px-4 py-5 sm:p-6">
+                          {resolvedRuns.map((run: Run, index: number) => {
+                            return <RunItem key={index} run={run} />;
+                          })}
+                        </div>
+                      </div>
+                    </>
+                  )}
+                </Await>
+              </Suspense>
+            )}
           </div>
         </div>
         <div className="w-2/3">
           <div className="h-full divide-y divide-gray-200 bg-white shadow">
-            <AppProviders>
-              <Outlet context={data} />
-            </AppProviders>
+            {isBoardSwitchPending ? (
+              <RunViewSkeleton />
+            ) : (
+              <Suspense fallback={<RunViewSkeleton />}>
+                <Await resolve={runs}>
+                  {(resolvedRuns: Run[]) => (
+                    <AppProviders>
+                      <Outlet context={resolvedRuns} />
+                    </AppProviders>
+                  )}
+                </Await>
+              </Suspense>
+            )}
           </div>
         </div>
       </div>
