@@ -25,6 +25,9 @@ export default function YoutubePlayer(props: PlayerProps) {
   if (url.origin.includes("youtu.be")) {
     video_id = url.pathname.substring(1);
   }
+  if (url.pathname.includes("/live/")) {
+    video_id = url.pathname.split("/live/")[1];
+  }
   // fix issue where youtube url includes a malformed timestamp query string
   video_id = video_id.split("?")[0];
   if (video_id === "") {
