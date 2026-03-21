@@ -10,5 +10,9 @@ export default defineConfig({
   base: "/sdv-review/",
   server: {
     port: 3000,
+    watch: {
+      ignored: ["**/node_modules/**"],
+      usePolling: true,
+    },
   },
 });

@@ -5,6 +5,7 @@ import FrameStepButtons from "../RunView/FrameStepButtons";
 import FrameRateInput from "../RunView/FrameRateInput";
 import MarkerButtons from "../RunView/MarkerButtons";
 import { useTiming } from "../Providers/TimingProvider";
+import SpeedButtons from "../RunView/SpeedButtons";
 
 const HelpText =
   "Let the video run.\n" +
@@ -48,6 +49,19 @@ export default function LocalPlayer(props: PlayerProps) {
     setEnd(getCurrentTime());
   };
 
+  const onSpeedUp = (rate: number) => () => {
+    if (!ref.current) {
+      return;
+    }
+
+    const player = ref.current.getInternalPlayer();
+    if (!player || player === null) {
+      return;
+    }
+
+    player.playbackRate = rate;
+  };
+
   return (
     <div className="flex">
       <div className="aspect-video w-full max-w-[960px]">
@@ -71,6 +85,7 @@ export default function LocalPlayer(props: PlayerProps) {
       </div>
       {/* Frame control buttons */}
       <FrameStepButtons onStepFrames={onStepFrames} />
+      <SpeedButtons onSpeedUp={onSpeedUp} rates={[0.5, 1, 2, 4, 8, 12]} />
 
       {/* Push states */}
       <div className="flex-none items-center">
