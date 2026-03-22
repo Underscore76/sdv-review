@@ -85,7 +85,7 @@ export default function LocalPlayer(props: PlayerProps) {
       </div>
       {/* Frame control buttons */}
       <FrameStepButtons onStepFrames={onStepFrames} />
-      <SpeedButtons onSpeedUp={onSpeedUp} rates={[0.5, 1, 2, 4, 8, 12, 24]} />
+      <SpeedButtons onSpeedUp={onSpeedUp} rates={[0.5, 1, 2, 4, 8, 12, 16]} />
 
       {/* Push states */}
       <div className="flex-none items-center">
