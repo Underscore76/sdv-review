@@ -21,7 +21,7 @@ export default function YoutubePlayer(props: PlayerProps) {
 
   const url = new URL(uri);
   let video_id = "";
-  video_id = url.searchParams.get("v") || "";
+  video_id = url.searchParams.get("v")?.substring(0, 11) || "";
   if (url.origin.includes("youtu.be")) {
     video_id = url.pathname.substring(1);
   }
