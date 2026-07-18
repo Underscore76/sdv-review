@@ -2,15 +2,40 @@ import { Navigate, useParams } from "react-router-dom";
 import { useRuns } from ".";
 import { useEffect, useMemo, useState } from "react";
 import VideoSelect from "../components/RunView/VideoSelector";
+import { getRunVideoUris } from "../components/RunsList/RunData";
 import YoutubePlayer from "../components/Video/YoutubePlayer";
 import { useTiming } from "../components/Providers/TimingProvider";
 import { useSegments } from "../components/Providers/SegmentProvider";
 import SegmentTable from "../components/RunView/SegmentTable";
 import TwitchPlayer from "../components/Video/TwitchPlayer";
 import Button from "../components/General/Button";
-import { copyTextClipboard } from "../utils";
+import MarkdownRegion from "../components/General/MarkdownRegion";
+import { copyTextClipboard, normalizeExternalUrl } from "../utils";
 import { scriptText as BiliBiliScriptText } from "../components/Video/BiliBiliScript";
 import { ClipboardIcon } from "@heroicons/react/24/outline";
+
+function RunInfoBlock({
+  title,
+  markdown,
+}: {
+  title: string;
+  markdown?: string;
+}) {
+  if (!markdown?.trim()) {
+    return null;
+  }
+
+  return (
+    <section className="mt-4 max-w-5xl rounded-md border border-gray-200 bg-white shadow-sm">
+      <div className="flex items-center justify-between gap-4 border-b border-gray-200 px-4 py-3">
+        <h2 className="text-sm font-semibold text-gray-900">{title}</h2>
+      </div>
+      <div className="max-h-[40vh] overflow-y-auto">
+        <MarkdownRegion markdown={markdown} />
+      </div>
+    </section>
+  );
+}
 
 export default function RunView() {
   const runs = useRuns();
@@ -30,7 +55,14 @@ export default function RunView() {
     setSegments([]);
   }, [run]);
 
-  const [video, setVideo] = useState<string>(run.videos.links[0].uri);
+  const firstVideo = getRunVideoUris(run)[0] || "";
+  const [video, setVideo] = useState<string>(firstVideo);
+  const normalizedVideo = useMemo(() => normalizeExternalUrl(video), [video]);
+
+  useEffect(() => {
+    setVideo(firstVideo);
+  }, [firstVideo]);
+
   const handleSelect = (video: string) => {
     setVideo(video);
   };
@@ -41,13 +73,13 @@ export default function RunView() {
       video.includes("youtube") ||
       video.includes("youtu.be")
     ) {
-      return <YoutubePlayer uri={video} run={run} run_id={run.id} />;
+      return <YoutubePlayer uri={normalizedVideo} run={run} run_id={run.id} />;
     }
     if (video.includes("twitch")) {
-      return <TwitchPlayer uri={video} run={run} run_id={run.id} />;
+      return <TwitchPlayer uri={normalizedVideo} run={run} run_id={run.id} />;
     }
     return null;
-  }, [video, frameRate]);
+  }, [video, normalizedVideo, frameRate]);
 
   const nullPlayer = useMemo(() => {
     return (
@@ -56,7 +88,7 @@ export default function RunView() {
         <br />
         <a
           className="text-blue-600 underline visited:text-purple-600 hover:text-blue-800"
-          href={video}
+          href={normalizedVideo}
           target="_blank"
         >
           {video}
@@ -87,13 +119,18 @@ export default function RunView() {
             Alternatively if you have yt-dlp installed, you can run the
             following command in your terminal to download the video:
             <pre className="whitespace-pre-wrap">
-              {`yt-dlp -o ${run.id}.mp4 ${video}`}
+              {`yt-dlp -o ${run.id}.mp4 ${normalizedVideo}`}
             </pre>
           </div>
+          <RunInfoBlock title="Rules" markdown={run.rules} />
+          <RunInfoBlock
+            title="Run comments"
+            markdown={run.comment || undefined}
+          />
         </div>
       </div>
     );
-  }, [video]);
+  }, [normalizedVideo, run.comment, run.id, run.rules, video]);
 
   return (
     <div className="h-full">
@@ -102,7 +139,7 @@ export default function RunView() {
           <button
             type="button"
             className="relative mr-4 rounded-full p-2 text-gray-900  shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset active:ring-2 active:ring-inset active:ring-indigo-600"
-            onClick={() => copyTextClipboard(video)}
+            onClick={() => copyTextClipboard(normalizedVideo)}
           >
             <span className="absolute -inset-1.5" />
             <span className="sr-only">Reload data</span>

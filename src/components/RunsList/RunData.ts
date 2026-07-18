@@ -57,8 +57,8 @@ export type Run = {
   weblink: string;
   game: string;
   category: Category;
-  videos: { links: { uri: string }[] };
-  comment: string;
+  videos: { links?: { uri: string }[]; text?: string } | null;
+  comment: string | null;
   status: { status: Status };
   players: { data: Player[] };
   date: string;
@@ -82,6 +82,16 @@ export type Run = {
   values: { [key: string]: string };
   rules: string;
 };
+
+export function getRunVideoUris(run: Run) {
+  const linkUris = run.videos?.links?.map((link) => link.uri) || [];
+  if (linkUris.length > 0) {
+    return linkUris;
+  }
+
+  const textUri = run.videos?.text?.trim();
+  return textUri ? [textUri] : [];
+}
 
 export type Variable = {
   id: string;

@@ -1,10 +1,10 @@
-import { Fragment, useEffect } from "react";
+import { Fragment, useCallback, useEffect } from "react";
 import { Transition, Listbox } from "@headlessui/react";
-import { Run } from "../RunsList/RunData";
+import { getRunVideoUris, Run } from "../RunsList/RunData";
 import { useState } from "react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 
-function classNames(...classes: any) {
+function classNames(...classes: Array<string | false | null | undefined>) {
   return classes.filter(Boolean).join(" ");
 }
 
@@ -14,17 +14,19 @@ export type VideoSelectProps = {
 };
 
 export default function VideoSelect(props: VideoSelectProps) {
-  const { run } = props;
-  const [selected, setSelected] = useState(run.videos.links[0].uri);
+  const { run, onSelect } = props;
+  const videos = getRunVideoUris(run);
+  const firstVideo = videos[0] || "";
+  const [selected, setSelected] = useState(firstVideo);
+
+  const handleSelect = useCallback((video: string) => {
+    setSelected(video);
+    onSelect && onSelect(video);
+  }, [onSelect]);
 
   useEffect(() => {
-    handleSelect(run.videos.links[0].uri);
-  }, [run]);
-
-  const handleSelect = (video: string) => {
-    setSelected(video);
-    props.onSelect && props.onSelect(video);
-  };
+    setSelected(firstVideo);
+  }, [firstVideo]);
 
   return (
     <Listbox value={selected} onChange={handleSelect}>
@@ -52,7 +54,7 @@ export default function VideoSelect(props: VideoSelectProps) {
               leaveTo="opacity-0"
             >
               <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                {run.videos.links.map((links, index) => (
+                {videos.map((video, index) => (
                   <Listbox.Option
                     key={index}
                     className={({ active }) =>
@@ -61,7 +63,7 @@ export default function VideoSelect(props: VideoSelectProps) {
                         "relative cursor-default select-none py-2 pl-3 pr-9",
                       )
                     }
-                    value={links.uri}
+                    value={video}
                   >
                     {({ selected, active }) => (
                       <>
@@ -71,7 +73,7 @@ export default function VideoSelect(props: VideoSelectProps) {
                             "block truncate",
                           )}
                         >
-                          {links.uri}
+                          {video}
                         </span>
 
                         {selected ? (

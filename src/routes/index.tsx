@@ -13,6 +13,7 @@ import Header from "../components/Header";
 import RunItem from "../components/RunsList/RunItem";
 import { Run, Variable, VariableLookup } from "../components/RunsList/RunData";
 import AppProviders from "../components/Providers";
+import { formatTime } from "../utils";
 
 async function loadRuns(): Promise<Run[]> {
   const game_id =
@@ -89,7 +90,13 @@ function RunsListSkeleton() {
 }
 
 function RunViewSkeleton() {
-  return <div className="p-6 text-sm text-gray-500">Loading run details...</div>;
+  return (
+    <div className="p-6 text-sm text-gray-500">Loading run details...</div>
+  );
+}
+
+function totalSubmittedDuration(runs: Run[]) {
+  return runs.reduce((total, run) => total + (run.times.primary_t || 0), 0);
 }
 
 export function Home() {
@@ -125,12 +132,19 @@ export function Home() {
                 <Await resolve={runs}>
                   {(resolvedRuns: Run[]) => (
                     <>
-                      <Header text={`Runs - ${resolvedRuns.length}`} />
+                      <Header
+                        text={`Runs - ${resolvedRuns.length}`}
+                        subtext={`Total submitted time: ${formatTime(
+                          totalSubmittedDuration(resolvedRuns),
+                        )}`}
+                      />
                       <div className="h-[calc(100vh-180px)] overflow-y-auto">
                         <div className="h-full flex-grow overflow-y-auto px-4 py-5 sm:p-6">
-                          {resolvedRuns.map((run: Run, index: number) => {
-                            return <RunItem key={index} run={run} />;
-                          })}
+                          <ul className="space-y-3">
+                            {resolvedRuns.map((run: Run, index: number) => {
+                              return <RunItem key={index} run={run} />;
+                            })}
+                          </ul>
                         </div>
                       </div>
                     </>

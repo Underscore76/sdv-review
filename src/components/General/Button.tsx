@@ -25,11 +25,8 @@ export default function Button(props: ButtonProps) {
     <button
       className={joinClasses(
         "min-w-16 rounded-md px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2",
-        classNames
-          ? classNames
-          : variant
-            ? ButtonVariantColors[variant]
-            : ButtonVariantColors.gray,
+        variant ? ButtonVariantColors[variant] : ButtonVariantColors.gray,
+        classNames || "",
       )}
       onClick={onClick}
     >

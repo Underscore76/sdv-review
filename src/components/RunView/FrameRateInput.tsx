@@ -28,9 +28,11 @@ export default function FrameRateInput(props: FrameRateInputProps) {
   };
 
   return (
-    <div className="flex flex-col items-center px-4 pt-2">
+    <div className="flex w-60 flex-col items-center px-2 pt-2">
       <div className="flex items-center">
-        <h2>Frame Rate</h2>
+        <h2 className="text-base font-semibold leading-6 text-gray-900">
+          Frame Rate
+        </h2>
         &nbsp;
         <div className="has-tooltip">
           <QuestionMarkCircleIcon className=" h-5 w-5 text-gray-500"></QuestionMarkCircleIcon>
@@ -39,7 +41,7 @@ export default function FrameRateInput(props: FrameRateInputProps) {
           </div>
         </div>
       </div>
-      <div className="mt-2">
+      <div className="mt-2 w-full">
         <input
           type="number"
           min="0"

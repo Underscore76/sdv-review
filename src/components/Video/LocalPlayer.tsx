@@ -6,6 +6,7 @@ import FrameRateInput from "../RunView/FrameRateInput";
 import MarkerButtons from "../RunView/MarkerButtons";
 import { useTiming } from "../Providers/TimingProvider";
 import SpeedButtons from "../RunView/SpeedButtons";
+import { useVideoControls } from "../Providers/VideoControlProvider";
 
 const HelpText =
   "Let the video run.\n" +
@@ -16,14 +17,10 @@ const HelpText =
 export default function LocalPlayer(props: PlayerProps) {
   const { uri, run_id } = props;
   const { frameRate, setStart, setEnd } = useTiming();
+  const { setJumpToSegmentTime } = useVideoControls();
   const ref = React.useRef<ReactPlayer | null>(null);
 
-  let video_id = "";
-  if (uri.startsWith("blob:")) {
-    video_id = uri;
-  } else {
-    return <div>Invalid Local File</div>;
-  }
+  const video_id = uri.startsWith("blob:") ? uri : "";
 
   async function updateFrames(frames: number) {
     const time = ref.current?.getCurrentTime() || 0;
@@ -36,6 +33,20 @@ export default function LocalPlayer(props: PlayerProps) {
     const time = ref.current?.getCurrentTime() || 0;
     return time;
   };
+
+  const jumpToTime = React.useCallback((time: number) => {
+    ref.current?.getInternalPlayer()?.pause();
+    ref.current?.seekTo(Math.max(time, 0));
+  }, []);
+
+  React.useEffect(() => {
+    setJumpToSegmentTime(jumpToTime);
+    return () => setJumpToSegmentTime(null);
+  }, [jumpToTime, setJumpToSegmentTime]);
+
+  if (!video_id) {
+    return <div>Invalid Local File</div>;
+  }
 
   const onStepFrames = (frames: number) => () => {
     updateFrames(frames);
@@ -93,6 +104,7 @@ export default function LocalPlayer(props: PlayerProps) {
         <MarkerButtons
           onSetStart={onSetStart}
           onSetEnd={onSetEnd}
+          onJumpToTime={jumpToTime}
           video_uri={video_id}
           run_id={run_id}
         />

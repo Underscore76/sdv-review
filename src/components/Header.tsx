@@ -1,5 +1,6 @@
 type HeaderProps = {
   text: string;
+  subtext?: string;
 };
 
 export default function Header(props: HeaderProps) {
@@ -9,6 +10,11 @@ export default function Header(props: HeaderProps) {
         <h1 className="text-3xl font-bold tracking-tight text-gray-900">
           {props.text}
         </h1>
+        {props.subtext && (
+          <p className="mt-1 text-sm font-medium text-gray-500">
+            {props.subtext}
+          </p>
+        )}
       </div>
     </header>
   );

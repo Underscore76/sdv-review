@@ -22,4 +22,28 @@ function copyTextClipboard(text: string) {
   navigator.clipboard.writeText(text);
 }
 
-export { formatTime, interpTime, copyClipboard, copyTextClipboard };
+function normalizeExternalUrl(url: string) {
+  const trimmedUrl = url.trim();
+  if (/^[a-z][a-z0-9+.-]*:/i.test(trimmedUrl)) {
+    return trimmedUrl;
+  }
+  if (trimmedUrl.startsWith("//")) {
+    return `https:${trimmedUrl}`;
+  }
+  if (
+    /^(www\.|youtube\.com|youtu\.be|twitch\.tv|bilibili\.com|b23\.tv)/i.test(
+      trimmedUrl,
+    )
+  ) {
+    return `https://${trimmedUrl}`;
+  }
+  return trimmedUrl;
+}
+
+export {
+  formatTime,
+  interpTime,
+  copyClipboard,
+  copyTextClipboard,
+  normalizeExternalUrl,
+};

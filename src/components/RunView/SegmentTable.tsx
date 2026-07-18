@@ -2,6 +2,15 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { copyClipboard, formatTime } from "../../utils";
 import { Segment } from "../Providers/SegmentProvider";
 import Button from "../General/Button";
+import { useVideoControls } from "../Providers/VideoControlProvider";
+
+function getVideoNumber(segment: Segment) {
+  const [, rawVideoNumber] = segment.video_uri.split(":");
+  const videoNumber = Number(rawVideoNumber);
+  return Number.isInteger(videoNumber) && videoNumber > 0
+    ? `#${videoNumber}`
+    : "";
+}
 
 export default function SegmentTable({
   segments,
@@ -10,6 +19,8 @@ export default function SegmentTable({
   segments: Segment[];
   setSegments: (segments: Segment[]) => void;
 }) {
+  const { jumpToSegmentTime } = useVideoControls();
+
   const removeSegment = (index: number) => {
     let newSegments = [...segments];
     newSegments.splice(index, 1);
@@ -27,6 +38,23 @@ export default function SegmentTable({
       0,
     );
     return formatTime(totalSeconds);
+  };
+  const showVideoColumn = segments.some((segment) => getVideoNumber(segment));
+  const renderTime = (segment: Segment, time: number) => {
+    const formattedTime = formatTime(time);
+    if (!jumpToSegmentTime) {
+      return formattedTime;
+    }
+
+    return (
+      <button
+        type="button"
+        className="rounded text-left text-blue-600 underline decoration-dotted underline-offset-2 hover:text-blue-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+        onClick={() => jumpToSegmentTime(time, segment)}
+      >
+        {formattedTime}
+      </button>
+    );
   };
 
   return (
@@ -69,6 +97,20 @@ export default function SegmentTable({
                         scope="col"
                         className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6"
                       >
+                        Duration
+                      </th>
+                      {showVideoColumn && (
+                        <th
+                          scope="col"
+                          className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                        >
+                          Video #
+                        </th>
+                      )}
+                      <th
+                        scope="col"
+                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
+                      >
                         Start
                       </th>
                       <th
@@ -76,12 +118,6 @@ export default function SegmentTable({
                         className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                       >
                         End
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                      >
-                        Duration
                       </th>
                       <th
                         scope="col"
@@ -95,13 +131,18 @@ export default function SegmentTable({
                     {segments.map((segment, index) => (
                       <tr key={index}>
                         <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                          {segment.start}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                          {segment.end}
-                        </td>
-                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                           {formatTime(segment.duration)}
+                        </td>
+                        {showVideoColumn && (
+                          <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                            {getVideoNumber(segment)}
+                          </td>
+                        )}
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {renderTime(segment, segment.start)}
+                        </td>
+                        <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                          {renderTime(segment, segment.end)}
                         </td>
                         <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-center text-sm font-medium sm:pr-0">
                           <button onClick={() => removeSegment(index)}>
